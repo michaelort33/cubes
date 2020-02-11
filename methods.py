@@ -1,5 +1,6 @@
 # imports
 import numpy as np
+import matplotlib.pyplot as plt
 from scipy.spatial.transform import Rotation as R
 from itertools import product, permutations, chain
 
@@ -31,3 +32,11 @@ def gen_neighbors():
     return list(filter(lambda x: 0<np.abs(x).sum()<3, chain(product(r,r,r),permutations([0,0,2]))))
 
 
+def plot_state(state, fc=(0.5,0,0.2,0.5)):
+    """ Plots a state specified as a 3D boolean array """
+    
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    ax.set_aspect('equal')
+    
+    ax.voxels(state, facecolors=fc, edgecolors='k')
