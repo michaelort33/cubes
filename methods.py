@@ -31,7 +31,6 @@ def gen_neighbors():
     r = [-1,0,1]
     return list(filter(lambda x: 0<np.abs(x).sum()<3, chain(product(r,r,r),permutations([0,0,2]))))
 
-
 def plot_state(state, fc=(0.5,0,0.2,0.5)):
     """ Plots a state specified as a 3D boolean array """
     
@@ -40,3 +39,11 @@ def plot_state(state, fc=(0.5,0,0.2,0.5)):
     ax.set_aspect('equal')
     
     ax.voxels(state, facecolors=fc, edgecolors='k')
+    
+def plot_coords(coords):
+    """ Plot cubes at the coordinates given by coords (N,3). """
+    ranges = np.ptp(coords, 0) + 1
+    state = np.zeros(ranges, bool)
+    coords = coords + coords.min(0)   
+    state[coords[:,0], coords[:,1], coords[:,2]] = True
+    plot_state(state)
