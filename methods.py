@@ -33,25 +33,35 @@ def gen_neighbors():
     r = [-2,-1,0,1,2]
     return list(filter(lambda x: 0<np.abs(x).sum()<3, product(r,r,r)))
 
-def plot_state(state, fc=(0.5,0,0.2,0.5)):
-    """ Plots a state specified as a 3D boolean array """
-    
+def plot_board(size=6, fc=(1,1,0.8,1), ec=(0.2,0.2,0.2,1)):
+    """ Plots the initial board given an empty state array """
+    box = np.ones([size+2]*3, bool)
+    box[2:,2:,2:] = False
     fig = plt.gcf()
     ax = fig.gca(projection='3d')
-    #ax.set_aspect('equal')
-    
-    ax.voxels(state, facecolors=fc, edgecolors='k')
+    ax.view_init(20,15)
+    vox = ax.voxels(box, facecolors=fc, edgecolors=ec)
     scaling = np.array([getattr(ax, 'get_{}lim'.format(dim))() for dim in 'xyz']);
     ax.auto_scale_xyz(*[[np.min(scaling), np.max(scaling)]] * 3)
+    ax.autoscale(False)
+    return vox
 
-
-def plot_coords(coords):
-    """ Plot cubes at the coordinates given by coords (N,3). """
-    ranges = np.ptp(coords, 0).astype(int) + 1
-    state = np.zeros(ranges, bool)
-    coords = (coords - coords.min(0)).astype(int)
-    state[coords[:,0], coords[:,1], coords[:,2]] = True
-    plot_state(state)
+def plot_piece(location, fc=(0.4,0,0.4,1), ec=(0.2,0.2,0.2,1)):
+    """ Plots a single piece in the given location (3 tuple of x,y,z coordinates)"""
+    piece = np.zeros([max(x) + 1 for x in location], bool)
+    piece[location] = True
+    ax = plt.gca()
+    vox = ax.voxels(piece, facecolors=fc, edgecolors=ec)
+    plt.pause(0.01)
+    return vox
+    
+def remove_piece(handles):
+    """ Remove a piece by deleteting all voxels in the handle dictionary returned by plot_piece"""
+    [x.remove() for x in handles.values()]
+    
+def recolor_piece(handles, color='0.8'):
+    """ Recolors a piece given by the handle dictionary returned by plot_piece"""
+    [x.set_facecolor(color) for x in handles.values()]
     
 def get_valid_moves(M,N,x):
     """ Get all allowable moves in M (48,4,3), that don't collide with the 
