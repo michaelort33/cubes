@@ -47,3 +47,9 @@ def plot_coords(coords):
     coords = coords + coords.min(0)   
     state[coords[:,0], coords[:,1], coords[:,2]] = True
     plot_state(state)
+    
+def get_valid_moves(M,N,x):
+    """ Get all allowable moves in M (48,4,3), that don't collide with the 
+    occupancy coordinates in N (24,3), given the occupancy boolean x (24,)"""
+    return np.array([not(m[:, None] == N[x]).all(-1).any() for m in M])
+
