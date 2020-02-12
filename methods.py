@@ -2,8 +2,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial.transform import Rotation as R
-from itertools import product, permutations, chain
-
+from itertools import product, permutations
+from mpl_toolkits.mplot3d import Axes3D
 
 # get the array of 48 possible orientations for a block
 
@@ -28,8 +28,8 @@ def get_mapping():
 
 def gen_neighbors():
     """ Generate a table of the 24 reachable neighbors of a cell """
-    r = [-1,0,1]
-    return list(filter(lambda x: 0<np.abs(x).sum()<3, chain(product(r,r,r),permutations([0,0,2]))))
+    r = [-2,-1,0,1,2]
+    return list(filter(lambda x: 0<np.abs(x).sum()<3, product(r,r,r)))
 
 def plot_state(state, fc=(0.5,0,0.2,0.5)):
     """ Plots a state specified as a 3D boolean array """
