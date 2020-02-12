@@ -20,7 +20,7 @@ def get_mapping():
     for i in product(*x):
         r = R.from_euler('xyz', i, degrees=True)
         for one_coord in coords:
-            unsorted = r.apply(one_coord).round()
+            unsorted = r.apply(one_coord).round().astype(int)
             all_coords.append(unsorted[np.lexsort(unsorted.T)])
 
     unique_coordinates = np.unique(np.array(all_coords), axis=0)
