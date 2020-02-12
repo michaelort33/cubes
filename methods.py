@@ -72,6 +72,10 @@ def bool_to_ind(x):
     """ Convert a booleann vector x into it's equivalent index in base 10 """
     return np.r_[np.packbits(x)[::-1],np.uint8(0)].view(np.uint32)[0]
 
+def convert_coords(coords, target):
+    """ Converts coordinates (N,3) given with respect to a local target (3,) cell into global 
+    coordinates suitable for indexing into the full state."""
+    return tuple((coords + np.asarray(target)).T)
 
 def check_block_for_point(block, point):
 
