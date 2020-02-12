@@ -31,7 +31,7 @@ def get_mapping():
 def gen_neighbors():
     """ Generate a table of the 24 reachable neighbors of a cell """
     r = [-2,-1,0,1,2]
-    return list(filter(lambda x: 0<np.abs(x).sum()<3, product(r,r,r)))
+    return np.array(list(filter(lambda x: 0<np.abs(x).sum()<3, product(r,r,r))))
 
 def plot_board(size=6, fc=(1,1,0.8,1), ec=(0.2,0.2,0.2,1)):
     """ Plots the initial board given an empty state array """
