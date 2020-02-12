@@ -50,6 +50,42 @@ def plot_coords(coords):
     """ Plot cubes at the coordinates given by coords (N,3). """
     ranges = np.ptp(coords, 0).astype(int) + 1
     state = np.zeros(ranges, bool)
-    coords = coords + coords.min(0)   
-    state[coords[:,0], coords[:,1], coords[:,2]] = True
+    coords = (coords - coords.min(0)).astype(int)
+    state[coords[:, 0], coords[:, 1], coords[:, 2]] = True
     plot_state(state)
+
+
+def check_block_for_point(block, point):
+
+    for i in block:
+        if all(i == point):
+            return True
+    return False
+
+
+def gen_legal_moves():
+    legal_moves = get_mapping().astype(int)
+    neighbors = np.array(gen_neighbors())
+    x = [[1,0]] * 24
+    possible_states = list(product(*x))
+
+    moves = []
+    for one_state in tqdm(possible_states):
+        blocked_points = neighbors[one_state==1]
+        legality_boolean = []
+
+        for i in legal_moves:
+            for k in blocked_points:
+                if(check_block_for_point(i,k)):
+                    legality_boolean.append(0)
+                else:
+                    legality_boolean.append(1)
+
+        moves.append(legality_boolean)
+
+    lookup_table = np.array((possible_states, moves)).T
+
+    return lookup_table
+
+
+
