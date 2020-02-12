@@ -70,7 +70,8 @@ def get_valid_moves(M,N,x):
 
 def bool_to_ind(x):
     """ Convert a booleann vector x into it's equivalent index in base 10 """
-    return np.r_[np.packbits(x)[::-1],np.uint8(0)].view(np.uint32)
+    return np.r_[np.packbits(x)[::-1],np.uint8(0)].view(np.uint32)[0]
+
 
 def check_block_for_point(block, point):
 
