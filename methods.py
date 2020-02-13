@@ -84,27 +84,29 @@ def check_block_for_point(block, point):
             return True
     return False
 
+
 def gen_legal_moves():
     legal_moves = get_mapping().astype(int)
     neighbors = np.array(gen_neighbors())
     x = [[1,0]] * 24
     possible_states = list(product(*x))
 
-    moves = []
+    lookup_table = []
     for one_state in tqdm(possible_states[:1000]):
-        one_state = np.array(one_state)
-        blocked_points = neighbors[one_state == 1]
-        legality_boolean = []
+        blocked_points = neighbors[[i==1 for i in one_state]]
 
+        moves = []
         for i in legal_moves:
+            legality_boolean = []
             for k in blocked_points:
                 if(check_block_for_point(i,k)):
-                    legality_boolean.append(0)
-                else:
                     legality_boolean.append(1)
-
-        moves.append(legality_boolean)
-
-    lookup_table = np.array((possible_states, moves))
+                else:
+                    legality_boolean.append(0)
+            if sum(legality_boolean)==0:
+                moves.append(1)
+            else:
+                moves.append(0)
+        lookup_table.append([moves,one_state])
 
     return lookup_table
