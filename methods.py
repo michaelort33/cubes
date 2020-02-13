@@ -68,6 +68,15 @@ def get_valid_moves(M,N,x):
     occupancy coordinates in N (24,3), given the occupancy boolean x (24,)"""
     return np.array([not(m[:, None] == N[x]).all(-1).any() for m in M])
 
+def gen_mapmap(M,N):
+    """ Get a Moves Neighbors map in a single boolean matrix 48 moves (rows) by 24 neighbors (cols).
+    Each cell is true if the move in its row uses the neighbor in its column."""
+    return (M[:,:,None]==N).all(-1).any(1)
+
+def get_valid_moves2(X,x):
+    """ Get all allowable moves in X (48,24), given the occupancy boolean x (24,)"""
+    return ~X[:,x].any(-1)
+
 def bool_to_ind(x):
     """ Convert a booleann vector x into it's equivalent index in base 10 """
     return np.r_[np.packbits(x)[::-1],np.uint8(0)].view(np.uint32)[0]
