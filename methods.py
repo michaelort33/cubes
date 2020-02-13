@@ -33,7 +33,6 @@ def gen_neighbors():
     r = [-2,-1,0,1,2]
     return np.array(list(filter(lambda x: 0<np.abs(x).sum()<3, product(r,r,r))))
 
-<<<<<<< Updated upstream
 def plot_board(size=6, fc=(1,1,0.8,1), ec=(0.2,0.2,0.2,1)):
     """ Plots the initial board given an empty state array """
     box = np.ones([size+2]*3, bool)
