@@ -37,7 +37,7 @@ def plot_board(size=6, fc=(1,1,0.8,1), ec=(0.2,0.2,0.2,1)):
     """ Plots the initial board given an empty state array """
     box = np.ones([size+2]*3, bool)
     box[2:,2:,2:] = False
-    fig = plt.gcf()
+    fig = plt.figure()
     ax = fig.gca(projection='3d')
     ax.view_init(20,15)
     vox = ax.voxels(box, facecolors=fc, edgecolors=ec)
@@ -52,14 +52,14 @@ def plot_piece(location, fc=(0.4,0,0.4,1), ec=(0.2,0.2,0.2,1)):
     piece[location] = True
     ax = plt.gca()
     vox = ax.voxels(piece, facecolors=fc, edgecolors=ec)
-    plt.pause(0.01)
+    plt.pause(0.1)
     return vox
     
 def remove_piece(handles):
     """ Remove a piece by deleteting all voxels in the handle dictionary returned by plot_piece"""
     [x.remove() for x in handles.values()]
     
-def recolor_piece(handles, color='0.8'):
+def recolor_piece(handles, color=(0.8,0.8,0.8,0.7)):
     """ Recolors a piece given by the handle dictionary returned by plot_piece"""
     [x.set_facecolor(color) for x in handles.values()]
     
